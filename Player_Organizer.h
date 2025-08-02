@@ -10,7 +10,6 @@ struct Player {
     std::string name;
     std::string position;    // e.g., "ST", "CM", "GK", etc.
     int rating;              // Overall rating
-    std::string formation;   // Formation suitability, e.g., "4-4-2", "4-3-3"
     std::string nation;
     std::string league;
     std::string team;
@@ -65,3 +64,4 @@ public:
 };
 
 #endif // PLAYER_ORGANIZER_H
+
