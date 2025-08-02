@@ -16,13 +16,13 @@ struct Player {
 
     Player() = default;
     Player(const std::string& name,
-           const std::string& position,
+           const std::vector<std::string>& positions,
            int rating,
            const std::string& formation,
            const std::string& nation,
            const std::string& league,
            const std::string& team)
-        : name(name), position(position), rating(rating),
+        : name(name), positions(positions), rating(rating),
           formation(formation), nation(nation), league(league), team(team) {}
 };
 
@@ -64,5 +64,6 @@ public:
 };
 
 #endif // PLAYER_ORGANIZER_H
+
 
 
