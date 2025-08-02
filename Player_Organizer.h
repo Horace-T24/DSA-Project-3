@@ -24,7 +24,7 @@ struct Player {
            const std::string& league,
            const std::string& team)
         : name(name), positions(positions), rating(rating),
-          formation(formation), nation(nation), league(league), team(team) {}
+          value(value), nation(nation), league(league), team(team) {}
 };
 
 class PlayerOrganizer {
@@ -65,6 +65,7 @@ public:
 };
 
 #endif // PLAYER_ORGANIZER_H
+
 
 
 
