@@ -6,9 +6,10 @@
 
 int SquadScore(){
   int avgRating = combined player ratings / 11
-  int chemistry = combined chemsitry
-  int score = avgRating + chemsitry;
+  int chemistry = combined chemistry
+  int score = avgRating + chemistry;
   return score;
 }
 
 #endif
+
