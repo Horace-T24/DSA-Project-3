@@ -10,6 +10,7 @@ struct Player {
     std::string name;
     std::vector<std::string> positions;    //Vector including all positions that a plaayer will get chemistry from e.g., "ST", "CM", "GK", etc.
     int rating;              // Overall rating
+    int value; 
     std::string nation;
     std::string league;
     std::string team;
@@ -18,7 +19,7 @@ struct Player {
     Player(const std::string& name,
            const std::vector<std::string>& positions,
            int rating,
-           const std::string& formation,
+           const int value,
            const std::string& nation,
            const std::string& league,
            const std::string& team)
@@ -64,6 +65,7 @@ public:
 };
 
 #endif // PLAYER_ORGANIZER_H
+
 
 
 
