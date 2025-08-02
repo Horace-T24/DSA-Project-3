@@ -35,7 +35,7 @@ private:
     std::unordered_multimap<std::string, size_t> nationIndex;
     std::unordered_multimap<std::string, size_t> leagueIndex;
     std::unordered_multimap<std::string, size_t> teamIndex;
-    std::unordered_multimap<std::string, size_t> formationIndex;
+    std::unordered_multimap<std::string, size_t> valueIndex;
     // Could add rating buckets or just filter linearly
 
     void indexPlayer(const Player& player, size_t idx);
@@ -51,20 +51,21 @@ public:
 
     // Filtering functions
     std::vector<Player> GetPlayersByRating(int minRating) const;
-    std::vector<Player> GetPlayersByFormation(const std::string& formation) const;
+    std::vector<Player> GetPlayersByValue(const int value) const;
     std::vector<Player> GetPlayersByNation(const std::string& nation) const;
     std::vector<Player> GetPlayersByLeague(const std::string& league) const;
     std::vector<Player> GetPlayersByTeam(const std::string& team) const;
 
     // Combined filtering: returns players matching all non-empty filters and min rating
     std::vector<Player> FilterPlayers(int minRating = 0,
-                                      const std::string& formation = "",
+                                      const int value = 0,
                                       const std::string& nation = "",
                                       const std::string& league = "",
                                       const std::string& team = "") const;
 };
 
 #endif // PLAYER_ORGANIZER_H
+
 
 
 
