@@ -8,22 +8,22 @@
 
 struct Player {
     std::string name;
-    std::vector<std::string> positions;    //Vector including all positions that a plaayer will get chemistry from e.g., "ST", "CM", "GK", etc.
-    int rating;              // Overall rating
-    int value; 
+    std::string position;
+    int rating;
+    int value;
     std::string nation;
     std::string league;
     std::string team;
 
     Player() = default;
     Player(const std::string& name,
-           const std::vector<std::string>& positions,
+           const std::string& position,
            int rating,
-           const int value,
+           int value,
            const std::string& nation,
            const std::string& league,
            const std::string& team)
-        : name(name), positions(positions), rating(rating),
+        : name(name), position(position), rating(rating),
           value(value), nation(nation), league(league), team(team) {}
 };
 
@@ -51,23 +51,17 @@ public:
 
     // Filtering functions
     std::vector<Player> GetPlayersByRating(int minRating) const;
-    std::vector<Player> GetPlayersByValue(const int value) const;
+    std::vector<Player> GetPlayersByValue(const std::string& value) const;
     std::vector<Player> GetPlayersByNation(const std::string& nation) const;
     std::vector<Player> GetPlayersByLeague(const std::string& league) const;
     std::vector<Player> GetPlayersByTeam(const std::string& team) const;
 
     // Combined filtering: returns players matching all non-empty filters and min rating
     std::vector<Player> FilterPlayers(int minRating = 0,
-                                      const int value = 0,
+                                      int value = 0,
                                       const std::string& nation = "",
                                       const std::string& league = "",
                                       const std::string& team = "") const;
 };
 
 #endif // PLAYER_ORGANIZER_H
-
-
-
-
-
-
