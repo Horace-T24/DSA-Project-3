@@ -2,10 +2,101 @@
 #include "Player_Organizer.h"
 #include "Formations.h"
 #include "Requirements.h"
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
 
-// Add your Requirements() function here or #include the file where it's defined
+//Helper which splits each line of the CSV file respecting fields with quotes
+std::vector<std::string> parseCSVLine(const std::string& line){
+    std::vector<std::string> cells;
+    std::string cell;
+    bool inQuotes = false;
 
-using namespace std;
+    for(size_t i = 0; i<line.size(); i++){
+        char c = line[i];
+        if(c == '"'){
+            inQuotes = !inQuotes;
+        } else if (c==',' && !inQuotes){
+            cells.push_back(cell);
+            cell.clear();
+        }else{
+            cell += c;
+        }
+    }
+    cells.push_back(cell);
+    return cells;
+}
+
+//Helper for splitting the position field (Ex: "ST, LW") into a vector
+std::vector<std::string> splitPositions(const std::string& str){
+    std::vector<std::string> positions;
+    std::stringstream ss(str);
+    std::string pos;
+
+    while(std::getline(ss,pos, ',')){
+        pos.erase(0, pos.find_first_not_of(" \t"));
+        pos.erase(pos.find_last_not_of(" \t") + 1);
+        positions.push_back(pos);
+    }
+    return positions;
+}
+
+
+void readData(
+    const std::string filename, 
+    std::vector<Player>& allPlayers,
+    std::unordered_map<std::string, 
+    std::vector<Player>>& playersByName)
+{    
+    std::ifstream file(filename);
+    if(!file.is_open()){
+        std::cerr <<"Error opening file. \n";
+        return;
+    }
+    
+    std::string line;
+    std::getline(file,line); //Header: includes all column names
+    std::vector<std::string> headers = parseCSVLine(line);
+
+    //Maps column names to an index
+    std::unordered_map<std::string, int> columnIndex;
+    for (int i = 0; i < headers.size(); ++i) {
+        columnIndex[headers[i]] = i;
+    }
+    
+    while(std::getline(file,line)){
+        std::vector<std::string> cells = parseCSVLine(line);
+        if(cells.size() < headers.size()) continue; //skips any bad rows just in case
+
+        try{
+            std::string name = cells[columnIndex["short_name"]];
+            std::vector<std::string> positions = splitPositions(cells[columnIndex["player_positions"]]);
+
+            int rating = 0;
+            std::string ratingStr = cells[columnIndex["overall"]];
+            if(!ratingStr.empty()) rating = std::stoi(ratingStr);
+
+            int value = 0;
+            std::string valueStr = cells[columnIndex["value_eur"]];
+            if(!valueStr.empty()) value = std::stoi(valueStr);
+
+            std::string nation = cells[columnIndex["nationality_name"]];
+            std::string league = cells[columnIndex["league_name"]];
+            std::string team = cells[columnIndex["club_name"]];
+
+            Player player(name,positions,rating,value,nation,league,team);
+            allPLayers.push_back(player);
+            playersByName[name].push_back(player);
+        } catch (...){
+            continue; //Skips bad rows
+        }
+    }
+}
+
+
 
 // Helper: Build the best team based on filtered players and required formation
 vector<Player> BuildBestTeam(const vector<Player>& candidates, const vector<string>& formationPositions) {
@@ -41,6 +132,26 @@ vector<Player> BuildBestTeam(const vector<Player>& candidates, const vector<stri
 }
 
 int main() {
+   //current code to read in csv file and test if it works
+
+    std::vector<Player> allPlayers;
+    std::unordered_map<std::string, std::vector<Player>> playersByName;
+
+    readData("male_players.csv", allPlayers, playersByName);
+
+    const std::string target = "K. Mbappé";
+    if (playersByName.count(target)) {
+        for (const Player& p : playersByName[target]) {
+            std::cout << p.name << " | Rating: " << p.rating << " | Team: " << p.team << "\n";
+        }
+    } else {
+        std::cout << target << " not found.\n";
+    }
+
+
+
+
+    
     // Step 1: Ask for requirements
     Requirements();
 
