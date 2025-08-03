@@ -1,4 +1,3 @@
-// Formations.h
 #ifndef FORMATIONS_H
 #define FORMATIONS_H
 
@@ -51,6 +50,14 @@ public:
             return it->second;
         }
         return {"Invalid formation"};
+    }
+
+    std::vector<std::string> getAllFormationNames() const {
+        std::vector<std::string> keys;
+        for (const auto& kv : formationMap) {
+            keys.push_back(kv.first);
+        }
+        return keys;
     }
 };
 
