@@ -58,3 +58,14 @@ int calculateAverageRating(const std::vector<Player>& squad) {
 
   return totalRating / static_cast<int>(squad.size());
 }
+
+int calculateTotalSquadValue(const std::vector<Player>& squad) {
+  int totalValue = 0;
+  for (const Player& p : squad) {
+    totalValue += p.value;
+  }
+  return totalValue;
+}
+
+#endif
+
