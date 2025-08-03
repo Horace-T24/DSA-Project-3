@@ -15,7 +15,7 @@ std::vector<std::string> parseCSVLine(const std::string& line){
     std::string cell;
     bool inQuotes = false;
 
-    for(size_t i = 0; i<line.size(); i++){
+    for(int i = 0; i<line.size(); i++){
         char c = line[i];
         if(c == '"'){
             inQuotes = !inQuotes;
@@ -46,17 +46,17 @@ std::vector<std::string> splitPositions(const std::string& str){
 
 
 void readData(
-    const std::string filename, 
+    const std::string& filename,
     std::vector<Player>& allPlayers,
-    std::unordered_map<std::string, 
+    std::unordered_map<std::string,
     std::vector<Player>>& playersByName)
-{    
+{
     std::ifstream file(filename);
     if(!file.is_open()){
         std::cerr <<"Error opening file. \n";
         return;
     }
-    
+
     std::string line;
     std::getline(file,line); //Header: includes all column names
     std::vector<std::string> headers = parseCSVLine(line);
@@ -66,7 +66,7 @@ void readData(
     for (int i = 0; i < headers.size(); ++i) {
         columnIndex[headers[i]] = i;
     }
-    
+
     while(std::getline(file,line)){
         std::vector<std::string> cells = parseCSVLine(line);
         if(cells.size() < headers.size()) continue; //skips any bad rows just in case
@@ -88,7 +88,7 @@ void readData(
             std::string team = cells[columnIndex["club_name"]];
 
             Player player(name,positions,rating,value,nation,league,team);
-            allPLayers.push_back(player);
+            allPlayers.push_back(player);
             playersByName[name].push_back(player);
         } catch (...){
             continue; //Skips bad rows
@@ -99,6 +99,7 @@ void readData(
 
 
 // Helper: Build the best team based on filtered players and required formation
+/*
 vector<Player> BuildBestTeam(const vector<Player>& candidates, const vector<string>& formationPositions) {
     unordered_map<string, Player> bestPlayers;
 
@@ -130,16 +131,17 @@ vector<Player> BuildBestTeam(const vector<Player>& candidates, const vector<stri
 
     return finalTeam;
 }
-
+*/
 int main() {
    //current code to read in csv file and test if it works
 
     std::vector<Player> allPlayers;
     std::unordered_map<std::string, std::vector<Player>> playersByName;
 
-    readData("male_players.csv", allPlayers, playersByName);
+    //Change the file to your own absolute path if you want to test. Change this path before submitting
+    readData("C:/Users/lucas/Downloads/DSA-Project-3-main/DSA-Project-3-main/male_players.csv", allPlayers, playersByName);
 
-    const std::string target = "K. Mbappé";
+    const std::string target = "E. Haaland";
     if (playersByName.count(target)) {
         for (const Player& p : playersByName[target]) {
             std::cout << p.name << " | Rating: " << p.rating << " | Team: " << p.team << "\n";
@@ -151,7 +153,7 @@ int main() {
 
 
 
-    
+    /*
     // Step 1: Ask for requirements
     Requirements();
 
@@ -195,6 +197,6 @@ int main() {
     for (const Player& p : bestTeam) {
         cout << p.position << ": " << p.name << " (" << p.rating << ")" << endl;
     }
-
+*/
     return 0;
 }

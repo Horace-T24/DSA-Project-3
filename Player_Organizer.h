@@ -6,9 +6,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
+
 struct Player {
     std::string name;
-    std::string position;
+    const std::vector<std::string>& positions;
     int rating;
     int value;
     std::string nation;
@@ -17,13 +18,13 @@ struct Player {
 
     Player() = default;
     Player(const std::string& name,
-           const std::string& position,
+           const std::vector<std::string>& positions,
            int rating,
            int value,
            const std::string& nation,
            const std::string& league,
            const std::string& team)
-        : name(name), position(position), rating(rating),
+        : name(name), positions(positions), rating(rating),
           value(value), nation(nation), league(league), team(team) {}
 };
 
