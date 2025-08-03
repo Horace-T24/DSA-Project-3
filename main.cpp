@@ -144,7 +144,7 @@ int main() {
     const std::string target = "E. Haaland";
     if (playersByName.count(target)) {
         for (const Player& p : playersByName[target]) {
-            std::cout << p.name << " | Rating: " << p.rating << " | Team: " << p.team << "\n";
+            std::cout << p.name << " | Rating: " << p.rating << " | Team: " << p.team << "| Value:" << p.value << "\n";
         }
     } else {
         std::cout << target << " not found.\n";

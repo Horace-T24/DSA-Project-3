@@ -8,8 +8,8 @@
 #include <unordered_map>
 #include <algorithm>
 #include "Formations.h"
-#include "SquadOptimizer.h"
 #include "Player_Organizer.h" // For Player struct
+#include "SquadHelper.h" //For helper functions
 
 struct SquadRequirements {
     std::string formation;
@@ -25,6 +25,29 @@ struct SquadRequirements {
 
     std::vector<std::string> clubs;
     std::vector<int> clubCounts;
+
+    SquadRequirements() = default;
+
+    SquadRequirements(const std::string& formation,
+                     int maxBudget,
+                     int minOverallRating,
+                     int minTeamChemistry,
+                     const std::vector<std::string>& nations,
+                     const std::vector<int>& nationCounts,
+                     const std::vector<std::string>& leagues,
+                     const std::vector<int>& leagueCounts,
+                     const std::vector<std::string>& clubs,
+                     const std::vector<int>& clubCounts)
+       : formation(formation),
+         maxBudget(maxBudget),
+         minOverallRating(minOverallRating),
+         minTeamChemistry(minTeamChemistry),
+         nations(nations),
+         nationCounts(nationCounts),
+         leagues(leagues),
+         leagueCounts(leagueCounts),
+         clubs(clubs),
+         clubCounts(clubCounts) {}
 };
 
 // Trim whitespace from string ends
