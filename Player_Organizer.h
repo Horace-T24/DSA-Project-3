@@ -4,23 +4,23 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <unordered_set>
+
 
 
 struct Player {
     std::string name;
-    const std::vector<std::string>& positions;
+    std::vector<std::string> positions;
     int rating;
-    int value;
+    unsigned int value;
     std::string nation;
     std::string league;
     std::string team;
 
     Player() = default;
     Player(const std::string& name,
-           const std::vector<std::string>& positions,
+            const std::vector<std::string>& positions,
            int rating,
-           int value,
+           unsigned int value,
            const std::string& nation,
            const std::string& league,
            const std::string& team)

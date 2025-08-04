@@ -1,6 +1,4 @@
-//
-// Created by lucas on 8/3/2025.
-//
+
 
 #ifndef SQUADHELPER_H
 #define SQUADHELPER_H

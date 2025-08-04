@@ -197,30 +197,21 @@ inline SquadRequirements Requirements() {
         req.nations = getValidatedStringList("Enter required nations (e.g., England, France, Germany):");
         req.nationCounts = getValidatedIntList("Enter number of players required from each nation:", req.nations.size(), 1, 11, 11);
     }
-    /*
-    req.nations = getValidatedStringList("Enter required nations (e.g., England, France, Germany):");
-    req.nationCounts = getValidatedIntList("Enter number of players required from each nation:", req.nations.size(), 1, 11, 11);
-*/
+
     std::cout << "Do you want to specify required leagues? (y/n): ";
     std::cin >> c; std::cin.ignore();
     if (c == 'y' || c == 'Y') {
         req.leagues = getValidatedStringList("Enter required leagues (e.g., Premier League, Ligue 1):");
         req.leagueCounts = getValidatedIntList("Enter number of players required from each league:", req.leagues.size(), 1, 11, 11);
     }
-    /*
-    req.leagues = getValidatedStringList("Enter required leagues (e.g., Premier League, Ligue 1):");
-    req.leagueCounts = getValidatedIntList("Enter number of players required from each league:", req.leagues.size(), 1, 11, 11);
-*/
+
     std::cout << "Do you want to specify required clubs? (y/n): ";
     std::cin >> c; std::cin.ignore();
     if (c == 'y' || c == 'Y') {
         req.clubs = getValidatedStringList("Enter required clubs (e.g., Manchester City, PSG):");
         req.clubCounts = getValidatedIntList("Enter number of players required from each club:", req.clubs.size(), 1, 11, 11);
     }
-    /*
-    req.clubs = getValidatedStringList("Enter required clubs (e.g., Manchester City, PSG):");
-    req.clubCounts = getValidatedIntList("Enter number of players required from each club:", req.clubs.size(), 1, 11, 11);
-*/
+
     // Summary
     std::cout << "\n--- Squad Requirements Summary ---" << std::endl;
     std::cout << "Formation: " << req.formation << std::endl;
