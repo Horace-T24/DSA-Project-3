@@ -11,16 +11,16 @@ struct Player {
     std::string name;
     std::vector<std::string> positions;
     int rating;
-    unsigned int value;
+     int value;
     std::string nation;
     std::string league;
     std::string team;
 
-    Player() = default;
+    Player() =default;
     Player(const std::string& name,
-            const std::vector<std::string>& positions,
+        std::vector<std::string>& positions,
            int rating,
-           unsigned int value,
+            int value,
            const std::string& nation,
            const std::string& league,
            const std::string& team)

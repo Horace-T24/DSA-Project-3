@@ -187,7 +187,7 @@ inline SquadRequirements Requirements() {
         break;
     }
 
-    req.maxBudget = getValidatedInt("What is your maximum squad budget?", 1, std::numeric_limits<int>::max());
+    req.maxBudget = getValidatedInt("What is your maximum squad budget(0-2000000)?", 1, std::numeric_limits<int>::max());
     req.minOverallRating = getValidatedInt("What is your required squad overall rating? (0-99)", 0, 99);
     req.minTeamChemistry = getValidatedInt("What is your required squad team chemistry? (0-33)", 0, 33);
 
@@ -262,11 +262,7 @@ inline bool DoesSquadMeetRequirements(const std::vector<Player>& squad, const Sq
     // Check nations counts
     std::unordered_map<std::string, int> nationCountMap;
     for (const auto& player : squad) nationCountMap[player.nation]++;
-    /*
-    for (size_t i = 0; i < req.nations.size(); i++) {
-        if (nationCountMap[req.nations[i]] < req.nationCounts[i]) return false;
-    }
-    */
+
     if (!req.nations.empty()) {
         for (size_t i = 0; i < req.nations.size(); i++) {
             if (nationCountMap[req.nations[i]] < req.nationCounts[i]) return false;
@@ -276,11 +272,7 @@ inline bool DoesSquadMeetRequirements(const std::vector<Player>& squad, const Sq
     // Check leagues counts
     std::unordered_map<std::string, int> leagueCountMap;
     for (const auto& player : squad) leagueCountMap[player.league]++;
-    /*
-    for (size_t i = 0; i < req.leagues.size(); i++) {
-        if (leagueCountMap[req.leagues[i]] < req.leagueCounts[i]) return false;
-    }
-*/
+
     if (!req.leagues.empty()) {
         for (size_t i = 0; i < req.leagues.size(); i++) {
             if (leagueCountMap[req.leagues[i]] < req.leagueCounts[i]) return false;
@@ -290,11 +282,7 @@ inline bool DoesSquadMeetRequirements(const std::vector<Player>& squad, const Sq
     // Check clubs counts
     std::unordered_map<std::string, int> clubCountMap;
     for (const auto& player : squad) clubCountMap[player.team]++;
-    /*
-    for (size_t i = 0; i < req.clubs.size(); i++) {
-        if (clubCountMap[req.clubs[i]] < req.clubCounts[i]) return false;
-    }
-*/
+
     if (!req.clubs.empty()) {
         for (size_t i = 0; i < req.clubs.size(); i++) {
             if (clubCountMap[req.clubs[i]] < req.clubCounts[i]) return false;

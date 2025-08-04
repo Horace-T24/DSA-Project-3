@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <algorithm>
+#include <chrono>
 
 //Helper which splits each line of the CSV file respecting fields with quotes
 std::vector<std::string> parseCSVLine(const std::string& line){
@@ -84,11 +84,12 @@ void readData(
             int value = 0;
             std::string valueStr = cells[columnIndex["value_eur"]];
             if(!valueStr.empty()) value = std::stoi(valueStr);
-            value = value/100;
+            value = value/500;
 
             std::string nation = cells[columnIndex["nationality_name"]];
             std::string league = cells[columnIndex["league_name"]];
             std::string team = cells[columnIndex["club_name"]];
+            //std::string version = cells[columnIndex["fifa_version"]];
 
             Player player(name,positions,rating,value,nation,league,team);
             allPlayers.push_back(player);
@@ -102,13 +103,25 @@ void readData(
 
 
 int main() {
-
     std::vector<Player> allPlayers;
     std::unordered_map<std::string,std::vector<Player>> playersByName;
 
+    std::string file ="male_players.csv";
+    char c;
+    std::cout<< "Do you have the male_players.csv loaded into your IDE? (y/n)?\n";
+    std::cin>>c;
+
+    while (c != 'y' && c != 'Y' && c != 'n' && c != 'N') {
+        std::cout << "Invalid input. Please enter (y/n): ";
+        std::cin >> c;
+    }
+    if (c == 'n' || c == 'N') {
+        std::cout << "Please enter the absolute path to the male_players.csv: ";
+        std::getline(std::cin, file);
+    }
 
     //Change the file to your own absolute path if you want to use this program. Change this path before submitting
-    readData("C:/Users/lucas/Downloads/DSA-Project-3-main/DSA-Project-3-main/male_players.csv", allPlayers, playersByName);
+    readData(file, allPlayers, playersByName);
 
     //Prompt user for requirements
     SquadRequirements req = Requirements();
@@ -127,39 +140,58 @@ int main() {
 
     for (auto& [pos, vec] : playerByPosition) {
         std::sort(vec.begin(), vec.end(), [](const Player& a, const Player& b) {
-            return a.value < b.value;
+            return a.value > b.value;
         });
     }
 
+    std::string choice;
+    std::cout<<"Choose which algorithm to use by typing 1,2, or 3:\n";
+    std::cout<<"1. A*\n";
+    std::cout<<"2. Best Fit\n";
+    std::cout<<"3. both\n";
+    std::cin>>choice;
+
+
+    if(choice == "1" || choice == "3") {
+        auto start = std::chrono::system_clock::now();
+        std::vector<Player> bestSquad = AStarSquadOptimizer(formation, playerByPosition, req);
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        if (bestSquad.empty()) {
+            std::cout << "\nNo valid squad could be generated with the given constraints.\n";
+        } else {
+            std::cout << "\n--- A* Squad---\n";
+            for (const Player& p : bestSquad) {
+                std::cout << p.name << " | Rating: " << p.rating << " | Value: " << p.value << " | Version: "  << "\n";
+            }
+            std::cout << "Total Chemistry: " << calculateChem(bestSquad) << "\n";
+            std::cout << "Total Value: " << calculateTotalSquadValue(bestSquad) << "\n";
+            std::cout << "Rating: " << calculateAverageRating(bestSquad) << "\n";
+            std::cout << "A* runtime: " << duration.count() << " seconds\n";
+        }
+    }
+
     //Run A* function to find the best squad given the requirements
-    std::vector<Player> bestSquad = AStarSquadOptimizer(formation, playerByPosition, req);
+    if(choice == "2" || choice == "3") {
+        auto start = std::chrono::system_clock::now();
+        std::vector<Player> bestSquad = AStarSquadOptimizer(formation, playerByPosition, req);
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> duration = end - start;
 
-
-    if (bestSquad.empty()) {
-        std::cout << "\nNo valid squad could be generated with the given constraints.\n";
-    } else {
-        std::cout << "\n--- Optimal Squad ---\n";
-        for (const Player& p : bestSquad) {
-            std::cout << p.name << " | Rating: " << p.rating << " | Value: " << p.value << "\n";
-
+        if (bestSquad.empty()) {
+            std::cout << "\nNo valid squad could be generated with the given constraints.\n";
+        } else {
+            std::cout << "\n--- Best Fit Squad---\n";
+            for (const Player& p : bestSquad) {
+                std::cout << p.name << " | Rating: " << p.rating << " | Value: " << p.value << " | Version: "  << "\n";
+            }
+            std::cout << "Total Chemistry: " << calculateChem(bestSquad) << "\n";
+            std::cout << "Total Value: " << calculateTotalSquadValue(bestSquad) << "\n";
+            std::cout << "Rating: " << calculateAverageRating(bestSquad) << "\n";
+            std::cout << "Best Fit runtime: " << duration.count() << " seconds\n";
         }
-        std::cout << "Total Chemistry: " << calculateChem(bestSquad) << "\n";
-        std::cout << "Total Value: " << calculateTotalSquadValue(bestSquad) << "\n";
     }
-
-
-/*
-    const std::string target = "V. van Dijk";
-    if (playersByName.count(target)) {
-        for (const Player& p : playersByName[target]) {
-            std::cout << p.name << " | Rating: " << p.rating << " | positions " << p.positions[0] << "| Value:" << p.value << "\n";
-        }
-    } else {
-        std::cout << target << " not found.\n";
-    }
-
-*/
-
 
     return 0;
 }
