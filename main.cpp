@@ -117,9 +117,11 @@ int main() {
     }
     if (c == 'n' || c == 'N') {
         std::cout << "Please enter the absolute path to the male_players.csv: ";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, file);
     }
 
+    //file = "C:/Users/lucas/OneDrive/Desktop/male_players.csv";
     //Change the file to your own absolute path if you want to use this program. Change this path before submitting
     readData(file, allPlayers, playersByName);
 
@@ -148,7 +150,7 @@ int main() {
     std::cout<<"Choose which algorithm to use by typing 1,2, or 3:\n";
     std::cout<<"1. A*\n";
     std::cout<<"2. Best Fit\n";
-    std::cout<<"3. both\n";
+    std::cout<<"3. Both\n";
     std::cin>>choice;
 
 
@@ -163,7 +165,7 @@ int main() {
         } else {
             std::cout << "\n--- A* Squad---\n";
             for (const Player& p : bestSquad) {
-                std::cout << p.name << " | Rating: " << p.rating << " | Value: " << p.value << " | Version: "  << "\n";
+                std::cout << p.name << " | Rating: " << p.rating << " | Value: " << p.value  << "\n";
             }
             std::cout << "Total Chemistry: " << calculateChem(bestSquad) << "\n";
             std::cout << "Total Value: " << calculateTotalSquadValue(bestSquad) << "\n";
@@ -175,7 +177,7 @@ int main() {
     //Run A* function to find the best squad given the requirements
     if(choice == "2" || choice == "3") {
         auto start = std::chrono::system_clock::now();
-        std::vector<Player> bestSquad = AStarSquadOptimizer(formation, playerByPosition, req);
+        std::vector<Player> bestSquad = BestFitSquadOptimizer(formation, playerByPosition, req);
         auto end = std::chrono::system_clock::now();
         std::chrono::duration<double> duration = end - start;
 
@@ -184,7 +186,7 @@ int main() {
         } else {
             std::cout << "\n--- Best Fit Squad---\n";
             for (const Player& p : bestSquad) {
-                std::cout << p.name << " | Rating: " << p.rating << " | Value: " << p.value << " | Version: "  << "\n";
+                std::cout << p.name << " | Rating: " << p.rating << " | Value: " << p.value << "\n";
             }
             std::cout << "Total Chemistry: " << calculateChem(bestSquad) << "\n";
             std::cout << "Total Value: " << calculateTotalSquadValue(bestSquad) << "\n";
